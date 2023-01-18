@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         mPlayButton.setEnabled(false);
 
-        mNameEditText.addTextChangedListener();
 
         mNameEditText.addTextChangedListener(new TextWatcher() {
             @Override

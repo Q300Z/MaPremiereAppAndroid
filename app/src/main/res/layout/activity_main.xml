@@ -24,15 +24,16 @@
         android:id="@+id/zText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Please type your name"
+        android:hint="Entre ton nom"
         android:inputType="text"
+        android:textAlignment="center"
         android:minHeight="48dp"
+        android:width="250sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints=""
-         />
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/iButton"
@@ -40,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="Let's play"
+        android:text="Entrer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
