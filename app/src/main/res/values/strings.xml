@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">MaPremierApp</string>
+    <!--Main page-->
+    <string name="app_main_text">Bienvenue sur ma Premiere Application Android</string>
+    <string name="app_main_field_text">Entre ton nom</string>
+    <string name="app_main_button_text">Entrer</string>
+
+    <!--Quiz page-->
+    <string name="app_quiz_question">Question?</string>
+    <string name="app_quiz_response1">Answer1</string>
+    <string name="app_quiz_response2">Answer2</string>
+    <string name="app_quiz_response3">Answer3</string>
+    <string name="app_quiz_response4">Answer4</string>
+
+
 </resources>

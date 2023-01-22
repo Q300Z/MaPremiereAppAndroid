@@ -1,4 +1,5 @@
-package fr.tbo.mapremierapp;
+package fr.tbo.mapremierapp.controller;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import fr.tbo.mapremierapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,12 +32,10 @@ public class MainActivity extends AppCompatActivity {
         mNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // The user just clicked
+                Intent gameActivityIntent = new Intent(MainActivity.this, QuizActivity.class);
+                startActivity(gameActivityIntent);
             }
         });
 
