@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import fr.tbo.mapremierapp.R;
-
+import fr.tbo.mapremierapp.model.User;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mGreetingTextView;
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPlayButton.setEnabled(false);
 
+        User mUser = new User();
 
         mNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mUser.setFirstName(mNameEditText.getText().toString());
             }
 
             @Override
