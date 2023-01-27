@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mUser.setFirstName(mNameEditText.getText().toString());
+
             }
 
             @Override
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 // The user just clicked
                 Intent gameActivityIntent = new Intent(MainActivity.this, QuizActivity.class);
                 startActivity(gameActivityIntent);
+                //stock le nom du User
+                mUser.setFirstName(mNameEditText.getText().toString());
             }
         });
 
