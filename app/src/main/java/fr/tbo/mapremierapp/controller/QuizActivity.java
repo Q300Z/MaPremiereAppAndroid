@@ -1,5 +1,6 @@
 package fr.tbo.mapremierapp.controller;
 
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     Button mGameButton3;
     Button mGameButton4;
     TextView mTextViewQuestion;
+
+    TextView mDebug;
     private final QuestionBank mQuestionBank = generateQuestionBank();
+    private int mRemainingQuestionCount;
+    private int mScore = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         mGameButton2.setOnClickListener(this);
         mGameButton3.setOnClickListener(this);
         mGameButton4.setOnClickListener(this);
+
+        mRemainingQuestionCount = 4;
+
+        mDebug = findViewById(R.id.mDebug);
 
         displayQuestion(mQuestionBank.getCurrentQuestion());
     }
@@ -83,6 +92,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         mGameButton2.setText(answers.get(1));
         mGameButton3.setText(answers.get(2));
         mGameButton4.setText(answers.get(3));
+        mDebug.setText(mScore + " - " + mRemainingQuestionCount);
     }
     @Override
     public void onClick(View v) {
@@ -106,10 +116,26 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             throw new IllegalStateException("Unknown clicked view : " + v);
         }
+
+        mRemainingQuestionCount--;
+
+        if (mRemainingQuestionCount >= 0){
+            displayQuestion(mQuestionBank.getNextQuestion());
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Well done!")
+                    .setMessage("Ton score est de "+ mScore)
+                    .setPositiveButton("OK", (dialog, which) -> finish())
+                    .create()
+                    .show();
+        }
     }
     private void checkSuccess(int answer, int questionIndex){
         if (answer == questionIndex) {
             Toast.makeText(this, "Correct!",Toast.LENGTH_SHORT).show();
+            mScore++;
+        }else {
+            Toast.makeText(this, "Incorrect!",Toast.LENGTH_SHORT).show();
         }
     }
 }
