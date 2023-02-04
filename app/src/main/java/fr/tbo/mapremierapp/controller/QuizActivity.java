@@ -1,6 +1,8 @@
 package fr.tbo.mapremierapp.controller;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,10 +24,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     Button mGameButton4;
     TextView mTextViewQuestion;
 
-    TextView mDebug;
     private final QuestionBank mQuestionBank = generateQuestionBank();
     private int mRemainingQuestionCount;
     private int mScore = 0;
+    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,46 +46,121 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         mGameButton3.setOnClickListener(this);
         mGameButton4.setOnClickListener(this);
 
-        mRemainingQuestionCount = 4;
-
-        mDebug = findViewById(R.id.mDebug);
+        mRemainingQuestionCount = 10;
 
         displayQuestion(mQuestionBank.getCurrentQuestion());
     }
     private QuestionBank generateQuestionBank(){
         Questions question1 = new Questions(
-                "Who is the creator of Android?",
+                "Quel est le plus grand pays du monde en termes de superficie ?",
                 Arrays.asList(
-                        "Andy Rubin",
-                        "Steve Wozniak",
-                        "Jake Wharton",
-                        "Paul Smith"
+                        "Chine",
+                        "Russie",
+                        "États-Unis",
+                        "Canada"
+                ),
+                3
+        );
+
+        Questions question2 = new Questions(
+                "Qui a peint la Joconde ?",
+                Arrays.asList(
+                        "Michel-Ange",
+                        "Raphaël",
+                        "Leonardo da Vinci",
+                        "Donatello"
+                ),
+                2
+        );
+
+        Questions question3 = new Questions(
+                "Quel est le plus haut sommet d'Europe ?",
+                Arrays.asList(
+                        "Mont Blanc",
+                        "Elbrus",
+                        "Mont Viso",
+                        "Monte Rosa"
                 ),
                 0
         );
 
-        Questions question2 = new Questions(
-                "When did the first man land on the moon?",
+        Questions question4 = new Questions(
+                "Quelle est la capitale de l'Australie ?",
                 Arrays.asList(
-                        "1958",
-                        "1962",
-                        "1967",
-                        "1969"
+                        "Sydney",
+                        "Melbourne",
+                        "Canberra",
+                        "Brisbane"
                 ),
                 3
         );
 
-        Questions question3 = new Questions(
-                "What is the house number of The Simpsons?",
+        Questions question5 = new Questions(
+                "Quel est le nom de la devise de l'Union européenne ?",
                 Arrays.asList(
-                        "42",
-                        "101",
-                        "666",
-                        "742"
+                        "Dollar",
+                        "Livre Sterling",
+                        "Franc Suisse",
+                        "Euro"
                 ),
                 3
         );
-        return new QuestionBank(Arrays.asList(question1, question2, question3));
+
+        Questions question6 = new Questions(
+                "Qui a écrit 'Les Misérables' ?",
+                Arrays.asList(
+                        "Victor Hugo",
+                        "Charles Dickens",
+                        "Alexandre Dumas",
+                        "Gustave Flaubert"
+                ),
+                0
+        );
+
+        Questions question7 = new Questions(
+                "Quel est le plus long fleuve d'Afrique ?",
+                Arrays.asList(
+                        "Nil",
+                        "Congo",
+                        "Niger",
+                        "Zambèze"
+                ),
+                0
+        );
+
+        Questions question8 = new Questions(
+                "Quelle est la plus grande océan de la Terre ?",
+                Arrays.asList(
+                        "Atlantique",
+                        "Pacifique",
+                        "Indien",
+                        "Arctique"
+                ),
+                1
+        );
+
+        Questions question9 = new Questions(
+                "Quel est le nom du célèbre scientifique qui a développé la théorie de la relativité ?",
+                Arrays.asList(
+                        "Albert Einstein",
+                        "Stephen Hawking",
+                        "Isaac Newton",
+                        "Galileo Galilei"
+                ),
+                0
+        );
+
+        Questions question10 = new Questions(
+                "Quelle est la plus grande religion du monde ?",
+                Arrays.asList(
+                        "Islam",
+                        "Hinduisme",
+                        "Christianisme",
+                        "Bouddhisme"
+                ),
+                3
+        );
+        return new QuestionBank(Arrays.asList(question1, question2, question3, question4,question5,question6,question7,question8,question9,question10));
     }
     private void displayQuestion(final Questions question) {
     // Set the text for the question text view and the four buttons
@@ -92,7 +170,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         mGameButton2.setText(answers.get(1));
         mGameButton3.setText(answers.get(2));
         mGameButton4.setText(answers.get(3));
-        mDebug.setText(mScore + " - " + mRemainingQuestionCount);
     }
     @Override
     public void onClick(View v) {
@@ -119,13 +196,21 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         mRemainingQuestionCount--;
 
-        if (mRemainingQuestionCount >= 0){
+        if (mRemainingQuestionCount > 0){
             displayQuestion(mQuestionBank.getNextQuestion());
         }else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Well done!")
                     .setMessage("Ton score est de "+ mScore)
-                    .setPositiveButton("OK", (dialog, which) -> finish())
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent();
+                                intent.putExtra(BUNDLE_EXTRA_SCORE, mScore);
+                                setResult(RESULT_OK, intent);
+                                finish();
+                        }
+                    })
                     .create()
                     .show();
         }

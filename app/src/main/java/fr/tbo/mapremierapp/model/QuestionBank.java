@@ -5,7 +5,7 @@ import java.util.List;
 
 public class QuestionBank {
     private final List<Questions> mQuestionList;
-    private int mNextQuestionIndex;
+    private int mNextQuestionIndex = 0;
 
     public QuestionBank(List<Questions> questionList) {
         // Shuffle the question list before storing it
