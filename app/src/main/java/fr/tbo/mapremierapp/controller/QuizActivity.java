@@ -3,8 +3,10 @@ package fr.tbo.mapremierapp.controller;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,7 +30,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private int mRemainingQuestionCount;
     private int mScore = 0;
     public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
+    private boolean mEnableTouchEvents;
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return mEnableTouchEvents && super.dispatchTouchEvent(ev);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +53,14 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         mGameButton3.setOnClickListener(this);
         mGameButton4.setOnClickListener(this);
 
+        mEnableTouchEvents = true;
+
         mRemainingQuestionCount = 10;
 
         displayQuestion(mQuestionBank.getCurrentQuestion());
     }
-    private QuestionBank generateQuestionBank(){
+
+    private QuestionBank generateQuestionBank() {
         Questions question1 = new Questions(
                 "Quel est le plus grand pays du monde en termes de superficie ?",
                 Arrays.asList(
@@ -160,10 +170,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 ),
                 3
         );
-        return new QuestionBank(Arrays.asList(question1, question2, question3, question4,question5,question6,question7,question8,question9,question10));
+        return new QuestionBank(Arrays.asList(question1, question2, question3, question4, question5, question6, question7, question8, question9, question10));
     }
+
     private void displayQuestion(final Questions question) {
-    // Set the text for the question text view and the four buttons
+        // Set the text for the question text view and the four buttons
         mTextViewQuestion.setText(question.getQuestion());
         List<String> answers = question.getChoiceList();
         mGameButton1.setText(answers.get(0));
@@ -171,6 +182,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         mGameButton3.setText(answers.get(2));
         mGameButton4.setText(answers.get(3));
     }
+
     @Override
     public void onClick(View v) {
         int index;
@@ -193,34 +205,47 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             throw new IllegalStateException("Unknown clicked view : " + v);
         }
+        mEnableTouchEvents =false;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRemainingQuestionCount--;
 
-        mRemainingQuestionCount--;
+                if (mRemainingQuestionCount > 0) {
+                    displayQuestion(mQuestionBank.getNextQuestion());
+                } else {
+                    endGame();
+                }
+                mEnableTouchEvents = true;
+            }
+        }, 2000);
 
-        if (mRemainingQuestionCount > 0){
-            displayQuestion(mQuestionBank.getNextQuestion());
-        }else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Well done!")
-                    .setMessage("Ton score est de "+ mScore)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent();
-                                intent.putExtra(BUNDLE_EXTRA_SCORE, mScore);
-                                setResult(RESULT_OK, intent);
-                                finish();
-                        }
-                    })
-                    .create()
-                    .show();
-        }
     }
-    private void checkSuccess(int answer, int questionIndex){
+
+    private void endGame() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Well done!")
+                .setMessage("Ton score est de " + mScore)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.putExtra(BUNDLE_EXTRA_SCORE, mScore);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void checkSuccess(int answer, int questionIndex) {
         if (answer == questionIndex) {
-            Toast.makeText(this, "Correct!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
             mScore++;
-        }else {
-            Toast.makeText(this, "Incorrect!",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Incorrect!", Toast.LENGTH_SHORT).show();
         }
     }
 }
