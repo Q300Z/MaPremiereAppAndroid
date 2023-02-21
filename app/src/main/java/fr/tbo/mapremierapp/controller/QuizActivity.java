@@ -3,9 +3,9 @@ package fr.tbo.mapremierapp.controller;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -69,7 +69,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                         "États-Unis",
                         "Canada"
                 ),
-                3
+                1
         );
 
         Questions question2 = new Questions(
@@ -102,7 +102,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                         "Canberra",
                         "Brisbane"
                 ),
-                3
+                2
         );
 
         Questions question5 = new Questions(
@@ -168,7 +168,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                         "Christianisme",
                         "Bouddhisme"
                 ),
-                3
+                2
         );
         return new QuestionBank(Arrays.asList(question1, question2, question3, question4, question5, question6, question7, question8, question9, question10));
     }
@@ -218,7 +218,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 mEnableTouchEvents = true;
             }
-        }, 2000);
+        }, 1000);
 
     }
 
